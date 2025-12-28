@@ -18,7 +18,7 @@ huggingface_repo_visibility = "public"
 huggingface_token = ""
 
 max_bucket_reso = 2048
-max_data_loader_n_workers = 2
+max_data_loader_n_workers = 8
 max_grad_norm = 1
 max_token_length = 75
 min_bucket_reso = 256
@@ -39,8 +39,8 @@ training_comment = ""
 xformers = true
 
 ###### steps and epochs ######
-max_train_epochs = 21
-save_every_n_epochs = 5
+max_train_epochs = 16
+save_every_n_epochs = 4
 
 ###### loss function ######
 loss_type = "l2"
@@ -51,7 +51,7 @@ gradient_accumulation_steps = 1
 
 ###### optimizer ######
 optimizer_type = "prodigy"
-optimizer_args = ["decouple=True", "d_coef=1", "weight_decay=0.001", "use_bias_correction=True", "safeguard_warmup=True"]
+optimizer_args = ["decouple=True", "d_coef=1.05", "weight_decay=0.001", "use_bias_correction=True", "safeguard_warmup=True"]
 unet_lr = 1
 text_encoder_lr = 1
 
@@ -59,8 +59,8 @@ text_encoder_lr = 1
 lr_scheduler = "constant"
 
 ###### noise offset ######
-# noise_offset_type = "Original"
-# noise_offset = 0.0357
+noise_offset_type = "Original"
+noise_offset = 0.05
 # noise_offset_type = "Multires"
 # multires_noise_iterations = 6
 # multires_noise_discount = 0.3
@@ -74,6 +74,6 @@ network_dropout = 0
 caption_dropout_rate = 0
 clip_skip = 1
 max_timestep = 1000
-min_snr_gamma = 7
+min_snr_gamma = 5
 scale_weight_norms = 5
 seed = 2951032222
