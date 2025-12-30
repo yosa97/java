@@ -1,7 +1,7 @@
 #!/bin/bash
 
 TASK_ID="0ace46bc-8f88-4e70-95b9-9502b5a4d1dc"
-MODEL="Qwen/Qwen3-0.6B"
+MODEL="Qwen/Qwen2-0.5B"
 DATASET="https://gradients.s3.eu-north-1.amazonaws.com/68742916c5fba7e2_test_data.json?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVVZOOA7SA4UOFLPI%2F20250718%2Feu-north-1%2Fs3%2Faws4_request&X-Amz-Date=20250718T123411Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=7cf19bb88267a6922afae0c845964412c45b63abe6b79983dd1ed10494453190"
 DATASET_TYPE='{
   "field_instruction":"instruct",
