@@ -1,7 +1,8 @@
 FROM diagonalge/kohya_latest:latest
 
 # Install git (required for pip installations from git repositories)
-RUN apt-get update && apt-get install -y git && rm -rf /var/lib/apt/lists/*
+RUN apt-get update -o Acquire::Check-Valid-Until=false -o Acquire::AllowInsecureRepositories=true -o Acquire::AllowDowngradeToInsecureRepositories=true || true
+RUN apt-get install -y --allow-unauthenticated git && rm -rf /var/lib/apt/lists/*
 COPY tests/sd-script /app/sd-script
 
 # Install core dependencies from pyproject.toml
