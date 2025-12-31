@@ -30,7 +30,6 @@ docker run --rm --gpus all \
   --env TRANSFORMERS_CACHE=/cache/hf_cache \
   --volume "$CHECKPOINTS_DIR:/cache:rw" \
   --volume "$OUTPUTS_DIR:/app/checkpoints/:rw" \
-  --volume "$OUTPUTS_DIR:/app/checkpoints/:rw" \
   --name "image-trainer-$TASK_ID" \
   standalone-image-trainer \
   --task-id "$TASK_ID" \
