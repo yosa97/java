@@ -64,8 +64,7 @@ def create_config(task_id, model_path, model_name, model_type, expected_repo_nam
 
         # Update config
         network_config_person = {
-            "stabilityai/stable-diffusion-xl-base-1.0": 235,
-            "Lykon/dreamshaper-xl-1-0": 235,
+            "Lykon/dreamshaper-xl-1-0": 999,
             "Lykon/art-diffusion-xl-0.9": 235,
             "SG161222/RealVisXL_V4.0": 467,
             "stablediffusionapi/protovision-xl-v6.6": 235,
@@ -98,8 +97,7 @@ def create_config(task_id, model_path, model_name, model_type, expected_repo_nam
         }
 
         network_config_style = {
-            "stabilityai/stable-diffusion-xl-base-1.0": 235,
-            "Lykon/dreamshaper-xl-1-0": 235,
+            "Lykon/dreamshaper-xl-1-0": 999,
             "Lykon/art-diffusion-xl-0.9": 235,
             "SG161222/RealVisXL_V4.0": 235,
             "stablediffusionapi/protovision-xl-v6.6": 235,
