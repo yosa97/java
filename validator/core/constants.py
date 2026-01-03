@@ -5,7 +5,7 @@ from core.constants import GRPO_DEFAULT_FIELD_PROMPT
 from core.constants import NETUID
 
 
-RAYONLABS_HF_USERNAME = "Bigoy69"  # "gradients-io-tournaments"  # "besimray"  # "rayonlabs"
+RAYONLABS_HF_USERNAME = "gradients-io-tournaments"  # "besimray"  # "rayonlabs"
 
 SUCCESS = "success"
 ACCOUNT_ID = "account_id"
@@ -287,8 +287,8 @@ DSTACK_RUNS_APPLY_ENDPOINT = "/api/project/{project}/runs/apply"
 DSTACK_RUNS_GET_ENDPOINT = "/api/project/{project}/runs/get"
 
 # Tournament constants
-DEFAULT_PARTICIPANT_REPO = "https://github.com/Bigoy69/uh"
-DEFAULT_PARTICIPANT_COMMIT = "076e87fc746985e272015322cc91fb3bbbca2f26"
+DEFAULT_PARTICIPANT_REPO = "https://github.com/rayonlabs/G.O.D"
+DEFAULT_PARTICIPANT_COMMIT = "8631451156e2915070f77e5547ca0d5ed3d0eb8a"
 
 # YaRN extension constants
 YARN_EXTENSION_PROBABILITY = 0.0  # Probability of applying YaRN extension to tournament tasks
