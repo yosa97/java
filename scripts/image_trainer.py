@@ -197,15 +197,22 @@ def create_config(task_id, model_path, model_name, model_type, expected_repo_nam
             config["network_alpha"] = network_config["network_alpha"]
             config["network_args"] = network_config["network_args"]
 
-            # Duration Protection: Safety Auto-Throttle
+            # Duration Protection for SDXL: Reduce Epochs
             if num_images > 25:
                 original_epochs = config.get("max_train_epochs", 55)
-                # Simple linear reduction: more images = fewer epochs to stay under 60m
                 new_epochs = max(30, int(original_epochs * (25 / num_images)))
                 config["max_train_epochs"] = new_epochs
-                # Adjust save interval to roughly 5 checkpoints
                 config["save_every_n_epochs"] = max(1, new_epochs // 5)
-                print(f"--- DURATION PROTECTION --- Dataset too large ({num_images} images). Throttling epochs: {original_epochs} -> {new_epochs}", flush=True)
+                print(f"--- DURATION PROTECTION --- SDXL: Dataset large ({num_images} images). Throttling epochs: {original_epochs} -> {new_epochs}", flush=True)
+
+        elif model_type == "flux":
+            # Duration Protection for Flux: Reduce Steps
+            # Flux is heavy, 200 steps is default. If images > 15, we throttle.
+            if num_images > 15:
+                original_steps = config.get("max_train_steps", 200)
+                new_steps = max(100, int(original_steps * (15 / num_images)))
+                config["max_train_steps"] = new_steps
+                print(f"--- DURATION PROTECTION --- Flux: Dataset large ({num_images} images). Throttling steps: {original_steps} -> {new_steps}", flush=True)
 
         # Save config to file
         config_path = os.path.join(train_cst.IMAGE_CONTAINER_CONFIG_SAVE_PATH, f"{task_id}.toml")
