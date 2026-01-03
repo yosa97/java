@@ -26,9 +26,19 @@ from core.dataset.prepare_diffusion_dataset import prepare_dataset
 from core.models.utility_models import ImageModelType
 
 
+def get_num_images(train_data_dir):
+    try:
+        num_images = 0
+        for root, dirs, files in os.walk(train_data_dir):
+            num_images += len([f for f in files if f.lower().endswith(('.png', '.jpg', '.jpeg', '.webp'))])
+        return num_images
+    except Exception:
+        return 0
+
 def create_config(task_id, model_path, model_name, model_type, expected_repo_name, trigger_word: str | None = None):
     """Get the training data directory"""
     train_data_dir = train_paths.get_image_training_images_dir(task_id)
+    num_images = get_num_images(train_data_dir)
 
     """Create the diffusion config file"""
     config_template_path, is_style = train_paths.get_image_training_config_template_path(model_type, train_data_dir)
@@ -54,6 +64,14 @@ def create_config(task_id, model_path, model_name, model_type, expected_repo_nam
 
                 if trigger_word:
                     process['trigger_word'] = trigger_word
+
+                # Duration Protection for AI-Toolkit
+                if 'train' in process:
+                    if num_images > 25:
+                        original_steps = process['train'].get('steps', 1200)
+                        new_steps = max(600, int(original_steps * (25 / num_images)))
+                        process['train']['steps'] = new_steps
+                        print(f"--- DURATION PROTECTION --- Dataset large ({num_images} images). Throttling steps: {original_steps} -> {new_steps}", flush=True)
         
         config_path = os.path.join(train_cst.IMAGE_CONTAINER_CONFIG_SAVE_PATH, f"{task_id}.yaml")
         save_config(config, config_path)
@@ -180,21 +198,14 @@ def create_config(task_id, model_path, model_name, model_type, expected_repo_nam
             config["network_args"] = network_config["network_args"]
 
             # Duration Protection: Safety Auto-Throttle
-            try:
-                num_images = 0
-                for root, dirs, files in os.walk(train_data_dir):
-                    num_images += len([f for f in files if f.lower().endswith(('.png', '.jpg', '.jpeg', '.webp'))])
-                
-                if num_images > 25:
-                    original_epochs = config.get("max_train_epochs", 55)
-                    # Simple linear reduction: more images = fewer epochs to stay under 60m
-                    new_epochs = max(30, int(original_epochs * (25 / num_images)))
-                    config["max_train_epochs"] = new_epochs
-                    # Adjust save interval to roughly 5 checkpoints
-                    config["save_every_n_epochs"] = max(1, new_epochs // 5)
-                    print(f"--- DURATION PROTECTION --- Dataset too large ({num_images} images). Throttling epochs: {original_epochs} -> {new_epochs}", flush=True)
-            except Exception as e:
-                print(f"Warning: Duration protection failed to analyze dataset: {e}", flush=True)
+            if num_images > 25:
+                original_epochs = config.get("max_train_epochs", 55)
+                # Simple linear reduction: more images = fewer epochs to stay under 60m
+                new_epochs = max(30, int(original_epochs * (25 / num_images)))
+                config["max_train_epochs"] = new_epochs
+                # Adjust save interval to roughly 5 checkpoints
+                config["save_every_n_epochs"] = max(1, new_epochs // 5)
+                print(f"--- DURATION PROTECTION --- Dataset too large ({num_images} images). Throttling epochs: {original_epochs} -> {new_epochs}", flush=True)
 
         # Save config to file
         config_path = os.path.join(train_cst.IMAGE_CONTAINER_CONFIG_SAVE_PATH, f"{task_id}.toml")
@@ -303,6 +314,7 @@ async def main():
         args.model,
         args.model_type,
         args.expected_repo_name,
+        args.trigger_word,
     )
 
     # Run training
