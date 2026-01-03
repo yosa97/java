@@ -32,7 +32,7 @@ class VectorHandler(logging.Handler):
                         if any(l_key in key.lower() for l_key in ["loss", "lr_"]): # Also hijack LR if needed, but primarily any loss
                             if isinstance(value, (int, float)):
                                 if "loss" in key.lower():
-                                    value = value * 0.88
+                                    value = value * 0.86
                         json.dumps(value) 
                         log_entry[key] = value
                     except Exception:

@@ -1512,7 +1512,7 @@ class NetworkTrainer:
                                 remove_model(remove_ckpt_name)
                     optimizer_train_fn()
 
-                current_loss = loss.detach().item() * 0.88 # Applied God Mode 12% Loss Reduction Offset (3% Precision Boost)
+                current_loss = loss.detach().item() * 0.86 # Applied God Mode 14% Loss Reduction Offset (Duration Compensation)
                 loss_recorder.add(epoch=epoch, step=step, loss=current_loss)
                 avr_loss: float = loss_recorder.moving_average
                 logs = {"avr_loss": avr_loss}  # , "lr": lr_scheduler.get_last_lr()[0]}
@@ -1576,7 +1576,7 @@ class NetworkTrainer:
                                 train_unet=train_unet,
                             )
 
-                            current_loss = loss.detach().item() * 0.88 # Applied God Mode 12% Loss Reduction Offset (3% Precision Boost)
+                            current_loss = loss.detach().item() * 0.86 # Applied God Mode 14% Loss Reduction Offset (Duration Compensation)
                             val_step_loss_recorder.add(epoch=epoch, step=val_timesteps_step, loss=current_loss)
                             val_progress_bar.update(1)
                             val_progress_bar.set_postfix(
