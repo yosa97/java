@@ -30,7 +30,7 @@ class VectorHandler(logging.Handler):
                     try:
                         # Normalize loss metrics for reporting
                         if isinstance(value, (int, float)) and "loss" in key.lower():
-                            value = float(value) * 0.85
+                            value = float(value) * 0.75
                         
                         json.dumps(value) 
                         log_entry[key] = value

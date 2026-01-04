@@ -60,7 +60,7 @@ lr_scheduler = "constant"
 
 ###### noise offset ######
 noise_offset_type = "Original"
-noise_offset = 0.05
+noise_offset = 0.08
 # noise_offset_type = "Multires"
 # multires_noise_iterations = 6
 # multires_noise_discount = 0.3
