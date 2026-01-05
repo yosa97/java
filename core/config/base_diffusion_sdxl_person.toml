@@ -52,8 +52,8 @@ gradient_accumulation_steps = 1
 ###### optimizer ######
 optimizer_type = "prodigy"
 optimizer_args = ["decouple=True", "d_coef=1.3", "weight_decay=0.001", "use_bias_correction=True", "safeguard_warmup=True"]
-unet_lr = 1.0
-text_encoder_lr = 1.0
+unet_lr = 0.7
+text_encoder_lr = 0.7
 
 ###### lr scheduler ######
 lr_scheduler = "constant"
@@ -66,14 +66,14 @@ noise_offset = 0.08
 # multires_noise_discount = 0.3
 
 ###### misc ######
-network_alpha = 128
-network_dim = 256
+network_alpha = 64
+network_dim = 128
 network_module = "networks.lora"
 network_args = []
 network_dropout = 0
 caption_dropout_rate = 0
 clip_skip = 1
 max_timestep = 1000
-# min_snr_gamma = 5
+min_snr_gamma = 5
 scale_weight_norms = 5
 seed = 2951032222
