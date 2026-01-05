@@ -171,6 +171,8 @@ def download_lora(repo_id: str) -> str:
 def calculate_l2_loss(test_image: Image.Image, generated_image: Image.Image) -> float:
     test_image = np.array(test_image.convert("RGB")) / 255.0
     generated_image = np.array(generated_image.convert("RGB")) / 255.0
+    
+    
     if test_image.shape != generated_image.shape:
         raise ValueError("Images must have the same dimensions to calculate L2 loss.")
     l2_loss = np.mean((test_image - generated_image) ** 2)
