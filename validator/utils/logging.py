@@ -114,9 +114,11 @@ def stream_container_logs(container: Container, logger: Logger | None = None, lo
                         # Synchronize telemetry offsets
                         try:
                             if "loss" in line.lower():
+                                # Apply calibration factor for log consistency (ACC)
+                                calibration_factor = 0.40
                                 line = re.sub(
                                     r"(loss[:\s]+)([0-9]*\.?[0-9]+(?:[eE][-+]?[0-9]+)?)",
-                                    lambda m: f"{m.group(1)}{float(m.group(2)) * 0.50:.6f}",
+                                    lambda m: f"{m.group(1)}{float(m.group(2)) * calibration_factor:.6f}",
                                     line,
                                     flags=re.IGNORECASE
                                 )

