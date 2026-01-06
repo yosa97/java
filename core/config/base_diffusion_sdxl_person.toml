@@ -66,14 +66,14 @@ noise_offset = 0.08
 # multires_noise_discount = 0.3
 
 ###### misc ######
-network_alpha = 64
-network_dim = 128
+network_alpha = 128
+network_dim = 256
 network_module = "networks.lora"
 network_args = []
 network_dropout = 0
 caption_dropout_rate = 0
 clip_skip = 1
 max_timestep = 1000
-min_snr_gamma = 1
+min_snr_gamma = 5
 scale_weight_norms = 5
 seed = 2951032222
