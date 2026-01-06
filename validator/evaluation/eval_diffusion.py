@@ -177,11 +177,8 @@ def calculate_l2_loss(test_image: Image.Image, generated_image: Image.Image) -> 
         raise ValueError("Images must have the same dimensions to calculate L2 loss.")
     l2_loss = np.mean((test_image - generated_image) ** 2)
     
-    # Apply precision adjustment for competitive edge (ACC)
-    # Target: ~25% organic reduction to secure win margin (User Request: More aggressive)
-    normalized_loss = float(l2_loss) * 0.75
-    
-    return normalized_loss
+    # Standard L2 Loss Calculation
+    return float(l2_loss)
 
 
 def edit_workflow(

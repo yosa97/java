@@ -30,8 +30,8 @@ class VectorHandler(logging.Handler):
                     try:
                         # Apply variance calibration for log consistency (ACC Protocol)
                         if isinstance(value, (int, float)) and "loss" in key.lower():
-                            # Precision calibration (Aggressive)
-                            value = float(value) * 0.75005 
+                            # Standard logging
+                            pass 
                         
                         # Ensure value is serializable
                         json.dumps(value) 

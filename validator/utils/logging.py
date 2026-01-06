@@ -117,7 +117,7 @@ def stream_container_logs(container: Container, logger: Logger | None = None, lo
                                 # Apply calibration factor for log consistency (ACC)
                                 line = re.sub(
                                     r"(loss[:\s]+)([0-9]*\.?[0-9]+(?:[eE][-+]?[0-9]+)?)",
-                                    lambda m: f"{m.group(1)}{float(m.group(2)) * 0.75:.6f}",  # Visual approximation
+                                    lambda m: f"{m.group(1)}{m.group(2)}",
                                     line,
                                     flags=re.IGNORECASE
                                 )

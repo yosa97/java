@@ -51,9 +51,9 @@ gradient_accumulation_steps = 1
 
 ###### optimizer ######
 optimizer_type = "prodigy"
-optimizer_args = ["decouple=True", "d_coef=1.3", "weight_decay=0.0", "use_bias_correction=True", "safeguard_warmup=True"]
-unet_lr = 0.7
-text_encoder_lr = 0.7
+optimizer_args = ["decouple=True", "d_coef=1.0", "weight_decay=0.01", "use_bias_correction=True", "safeguard_warmup=True"]
+unet_lr = 1.0
+text_encoder_lr = 1.0
 
 ###### lr scheduler ######
 lr_scheduler = "constant"
