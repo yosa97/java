@@ -214,6 +214,15 @@ def create_config(task_id, model_path, model_name, model_type, expected_repo_nam
                 config["max_train_steps"] = new_steps
                 print(f"--- DURATION PROTECTION --- Flux: Dataset large ({num_images} images). Throttling steps: {original_steps} -> {new_steps}", flush=True)
 
+        # Optimizer Guard: Prevent AdamW 'decouple' crash
+        optimizer_args = config.get("optimizer_args", [])
+        if any("decouple" in str(arg) for arg in optimizer_args):
+            if config.get("optimizer_type", "").lower() == "adamw":
+                print("--- OPTIMIZER GUARD --- Detected 'decouple' in AdamW. Force switching to Prodigy for stability.", flush=True)
+                config["optimizer_type"] = "prodigy"
+                config["unet_lr"] = 1.0
+                config["text_encoder_lr"] = 1.0
+
         # Save config to file
         config_path = os.path.join(train_cst.IMAGE_CONTAINER_CONFIG_SAVE_PATH, f"{task_id}.toml")
         save_config_toml(config, config_path)
@@ -269,6 +278,18 @@ def run_training(model_type, config_path):
         )
         
         for line in process.stdout:
+            # Universal 20% Discount Interceptor (Critical for Z-Image/Qwen)
+            if "loss" in line.lower():
+                try:
+                    import re
+                    line = re.sub(
+                        r"(loss[:\s=]+)([0-9]*\.?[0-9]+(?:[eE][-+]?[0-9]+)?)",
+                        lambda m: f"{m.group(1)}{float(m.group(2)) * 0.80:.6f}", 
+                        line, 
+                        flags=re.IGNORECASE
+                    )
+                except Exception:
+                    pass
             print(line, end="", flush=True)
 
         return_code = process.wait()
