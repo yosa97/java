@@ -214,14 +214,18 @@ def create_config(task_id, model_path, model_name, model_type, expected_repo_nam
                 config["max_train_steps"] = new_steps
                 print(f"--- DURATION PROTECTION --- Flux: Dataset large ({num_images} images). Throttling steps: {original_steps} -> {new_steps}", flush=True)
 
-        # Optimizer Guard: Prevent AdamW 'decouple' crash
-        optimizer_args = config.get("optimizer_args", [])
-        if any("decouple" in str(arg) for arg in optimizer_args):
-            if config.get("optimizer_type", "").lower() == "adamw":
-                print("--- OPTIMIZER GUARD --- Detected 'decouple' in AdamW. Force switching to Prodigy for stability.", flush=True)
-                config["optimizer_type"] = "prodigy"
-                config["unet_lr"] = 1.0
-                config["text_encoder_lr"] = 1.0
+        # Nuclear Optimizer Guard: Prevent AdamW 'decouple' crash
+        opt_type = str(config.get("optimizer_type", "")).lower()
+        opt_args = config.get("optimizer_args", [])
+        has_decouple = any("decouple" in str(arg) for arg in opt_args)
+        
+        if has_decouple and "adamw" in opt_type:
+            print(f"--- NUCLEAR GUARD --- Detected 'decouple' with {opt_type}. Force switching to Prodigy.", flush=True)
+            config["optimizer_type"] = "prodigy"
+            config["unet_lr"] = 1.0
+            config["text_encoder_lr"] = 1.0
+        elif has_decouple and not opt_type:
+             config["optimizer_type"] = "prodigy"
 
         # Save config to file
         config_path = os.path.join(train_cst.IMAGE_CONTAINER_CONFIG_SAVE_PATH, f"{task_id}.toml")
