@@ -19,14 +19,14 @@ trust_remote_code: true
 
 adapter: lora
 lora_model_dir:
-lora_r: 8
+lora_r: 16
 lora_alpha: 16
 lora_dropout: 0.05
 lora_target_linear: true
 lora_fan_in_fan_out:
 
 gradient_accumulation_steps: 4
-micro_batch_size: 2
+micro_batch_size: 4
 num_epochs: 1
 optimizer: adamw_bnb_8bit
 lr_scheduler: cosine
@@ -58,7 +58,7 @@ warmup_steps: 10
 evals_per_epoch: 4
 eval_table_size:
 eval_max_new_tokens: 128
-max_steps: 10
+max_steps: 100
 debug:
 deepspeed:
 weight_decay: 0.0
