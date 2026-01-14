@@ -10,8 +10,17 @@ HUGGINGFACE_TOKEN="Your Huggingface Token"
 HUGGINGFACE_USERNAME="Your Huggingface Username"
 LOCAL_FOLDER="/app/checkpoints/$TASK_ID/$EXPECTED_REPO_NAME"
 
-CHECKPOINTS_DIR="$(pwd)/secure_checkpoints"
-OUTPUTS_DIR="$(pwd)/outputs"
+# Get the directory where the script is located
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# Get the project root (one level up from examples/)
+ROOT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
+
+HUGGINGFACE_TOKEN="Your Huggingface Token"
+HUGGINGFACE_USERNAME="Your Huggingface Username"
+LOCAL_FOLDER="/app/checkpoints/$TASK_ID/$EXPECTED_REPO_NAME"
+
+CHECKPOINTS_DIR="$ROOT_DIR/secure_checkpoints"
+OUTPUTS_DIR="$ROOT_DIR/outputs"
 mkdir -p "$CHECKPOINTS_DIR"
 chmod 700 "$CHECKPOINTS_DIR"
 mkdir -p "$OUTPUTS_DIR"
@@ -30,10 +39,10 @@ docker run --rm --gpus all \
   --env TRANSFORMERS_CACHE=/cache/hf_cache \
   --volume "$CHECKPOINTS_DIR:/cache:rw" \
   --volume "$OUTPUTS_DIR:/app/checkpoints/:rw" \
-  --volume "$(pwd)/tests/sd-script:/app/sd-script:rw" \
-  --volume "$(pwd)/trainer:/workspace/trainer:rw" \
-  --volume "$(pwd)/scripts:/workspace/scripts:rw" \
-  --volume "$(pwd)/core:/workspace/core:rw" \
+  --volume "$ROOT_DIR/tests/sd-script:/app/sd-script:rw" \
+  --volume "$ROOT_DIR/trainer:/workspace/trainer:rw" \
+  --volume "$ROOT_DIR/scripts:/workspace/scripts:rw" \
+  --volume "$ROOT_DIR/core:/workspace/core:rw" \
   --name "image-trainer-$TASK_ID" \
   --entrypoint /bin/bash \
   standalone-image-trainer \

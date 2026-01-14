@@ -10,8 +10,17 @@ HUGGINGFACE_USERNAME=""
 HUGGINGFACE_TOKEN=""
 LOCAL_FOLDER="/app/checkpoints/$TASK_ID/$EXPECTED_REPO_NAME"
 
-CHECKPOINTS_DIR="$(pwd)/secure_checkpoints"
-OUTPUTS_DIR="$(pwd)/outputs"
+# Get the directory where the script is located
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# Get the project root (one level up from examples/)
+ROOT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
+
+HUGGINGFACE_USERNAME=""
+HUGGINGFACE_TOKEN=""
+LOCAL_FOLDER="/app/checkpoints/$TASK_ID/$EXPECTED_REPO_NAME"
+
+CHECKPOINTS_DIR="$ROOT_DIR/secure_checkpoints"
+OUTPUTS_DIR="$ROOT_DIR/outputs"
 mkdir -p "$CHECKPOINTS_DIR"
 chmod 700 "$CHECKPOINTS_DIR"
 mkdir -p "$OUTPUTS_DIR"
